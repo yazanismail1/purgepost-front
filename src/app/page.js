@@ -17,8 +17,8 @@ export default function Home() {
           <p className="text-lg text-gray-500 mb-6 md:text-justify text-center">
             Automatically detect and remove negative comments from your posts with the help of AI. Let PurgePost keep your feed positive and engaging!
           </p>
-          <a href="/signup" className="md:block hidden w-full text-center py-3 bg-primary text-white rounded-lg shadow-lg hover:bg-hover transition duration-300">
-            Get Started
+          <a href="https://forms.gle/soWzvxzMJBg7grN67" className="block w-full text-center py-3 bg-primary text-white rounded-lg shadow-lg hover:bg-hover transition duration-300">
+            Request early access
           </a>
         </div>
 

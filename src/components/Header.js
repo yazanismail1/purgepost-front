@@ -1,7 +1,7 @@
 'use client';
 import { eraseCookie, getCookie } from '@/functions/utilities';
 import React from 'react';
-import {useRouter} from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 
 export default function Header() {
@@ -9,7 +9,7 @@ export default function Header() {
 
     const isLoggesIn = () => {
         let loggedIn = getCookie("accessToken") ? true : false;
-        let path = router.pathname.startsWith("/application");
+        let path = router.pathname?.startsWith("/application");
         return loggedIn && path;
     }
 

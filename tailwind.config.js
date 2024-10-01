@@ -12,6 +12,7 @@ module.exports = {
         foreground: "var(--foreground)",
         primary: "var(--primary)",
         hover: "var(--hover)",
+        light: "var(--light)",
       },
     },
   },

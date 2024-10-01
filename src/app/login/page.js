@@ -1,6 +1,6 @@
 'use client';
 import { auth } from '@/components/FirebaseConfig';
-import { setCookie } from '@/functions/utilities';
+import { getDataFromFirebase, setCookie } from '@/functions/utilities';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
 
@@ -11,14 +11,18 @@ export default function page() {
         try {
             let email = e.target.username.value;
             let password = e.target.password.value;
-            console.log({email, password})
             let user = await signInWithEmailAndPassword(auth, email, password);
             
             let accessToken = user?.user?.accessToken;
             let uid = user?.user?.uid
-            console.log({accessToken, uid})
+            let userData = await getDataFromFirebase("users", uid);
+            console.log(userData)
+            console.log(String(userData?.balance))
+            console.log(userData?.instagramToken)
             setCookie("accessToken", accessToken, 1);
             setCookie("uid", uid, 1);
+            setCookie("userBalance", String(userData?.balance), 1);
+            setCookie("instagramToken", userData?.instagramToken, 1);
 
             window.location.href = "/application/home";
         } catch (err) {

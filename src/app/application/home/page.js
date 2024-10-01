@@ -38,8 +38,8 @@ export default function Home() {
     }
     // check if the url has the code parameter
     // const urlParams = new URLSearchParams(window.location.search);
-    const urlParams = router.query;
-    const code = urlParams.code;
+    const urlParams = router?.query;
+    const code = urlParams?.code;
     if (code) {
       console.log("Code:", code);
       const body = { 

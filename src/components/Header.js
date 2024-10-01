@@ -1,7 +1,7 @@
 'use client';
 import { eraseCookie, getCookie } from '@/functions/utilities';
 import React from 'react';
-import useRouter from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
 
 export default function Header() {

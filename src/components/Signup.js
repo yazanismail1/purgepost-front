@@ -3,7 +3,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { db, auth } from '@/components/FirebaseConfig';
 import React from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import useRouter from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
 export default function Signup() {
     const router = useRouter();

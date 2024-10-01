@@ -83,9 +83,18 @@ export default function Home() {
     <div>
 
       {/* <Posts /> */}
-
+      <ConfigProvider
+        theme={{
+          components: {
+            Menu: {
+              itemBg: 'transparent',
+              horizontalItemSelectedColor: '#7200A7',
+            }
+          }
+        }}
+      >
       <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
-
+      </ConfigProvider>
       {current === 'home' && <>
         {getCookie("instagramToken") ?
           <Posts /> :

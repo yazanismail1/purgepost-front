@@ -5,11 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { AppstoreOutlined, DollarOutlined, HomeOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import HowItWorks from '@/components/HowItWorks';
 import { getCookie, sendGetRequest, sendPostRequest } from '@/functions/utilities';
-
+import { useRouter } from 'next/navigation';
 
 
 export default function Home() {
   const [current, setCurrent] = useState('home');
+  const router = useRouter();
 
   const onClick = (e) => {
     console.log('click ', e);
@@ -33,11 +34,12 @@ export default function Home() {
 
   useEffect(() => {
     if (!isLoggesIn()) {
-      window.location.href = "/login"
+      router.push("/login");
     }
     // check if the url has the code parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
+    // const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = router.query;
+    const code = urlParams.code;
     if (code) {
       console.log("Code:", code);
       const body = { 

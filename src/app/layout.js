@@ -1,6 +1,9 @@
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 import "./globals.css";
-import { ConfigProvider } from "antd";
+import dynamic from 'next/dynamic';
+// import { ConfigProvider } from "antd";
+
+const Header = dynamic(() => import('@/components/Header'), { ssr: false });
 
 
 
@@ -15,7 +18,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen bg-gray-100">
         <Header />
         <div className="md:px-[10rem] px-[2.5rem] py-10">
-          <ConfigProvider
+          {/* <ConfigProvider
             theme={{
               components: {
                 Menu: {
@@ -24,9 +27,9 @@ export default function RootLayout({ children }) {
                 }
               }
             }}
-          >
+          > */}
           {children}
-          </ConfigProvider>
+          {/* </ConfigProvider> */}
         </div>
       </body>
     </html>

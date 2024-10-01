@@ -1,19 +1,22 @@
 'use client';
 import { eraseCookie, getCookie } from '@/functions/utilities';
 import React from 'react';
+import useRouter from 'next/navigation';
 
 
 export default function Header() {
+    const router = useRouter();
+
     const isLoggesIn = () => {
         let loggedIn = getCookie("accessToken") ? true : false;
-        let path = window.location.pathname.startsWith("/application");
+        let path = router.pathname.startsWith("/application");
         return loggedIn && path;
     }
 
     const handleLogout = () => {
         eraseCookie("accessToken");
         eraseCookie("uid");
-        window.location.href = "/";
+        router.push("/");
     }
 
     return (

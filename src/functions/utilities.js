@@ -3,13 +3,7 @@ import { doc, getDoc } from "firebase/firestore";
 import cookie from 'react-cookies'
 
 const setCookie = (name, value, days) => {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    cookie.save(name, value, { path: '/', expires: expires });
+    cookie.save(name, value, { path: '/'});
     // document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 

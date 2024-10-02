@@ -46,9 +46,10 @@ export default function HomePage() {
         }
 
         let code = searchParams.get('code');
-        console.log("Code:", code);
         if (code) {
-            code = code.slice(0, -2);
+            if (code.endsWith('#_')) {
+                code = code.slice(0, -2);
+            }
         }
 
         // remove the last two characters from the code variable
@@ -90,6 +91,7 @@ export default function HomePage() {
             userId: userData?.data[0]?.user_id,
             username: userData?.data[0]?.username,
         };
+        console.log("getInstagramUserName", responseObject);
         return responseObject;
     };
 
@@ -102,6 +104,8 @@ export default function HomePage() {
             expiresIn: longTokenRes?.expires_in,
             tokenType: longTokenRes?.token_type,
         };
+        console.log("getLongLiveToken", response);
+
         return response;
     };
 
@@ -120,6 +124,10 @@ export default function HomePage() {
             accessToken: authRes?.data[0]?.access_token,
             userId: authRes?.data[0]?.user_id,
         };
+        console.log("authRes", authRes);
+        console.log("body", body);
+        console.log("exchangeCodeForToken", response);
+
         return response;
     }
 

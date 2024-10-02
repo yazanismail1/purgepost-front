@@ -1,4 +1,5 @@
 import { db } from "@/components/FirebaseConfig";
+import axios from "axios";
 import { doc, getDoc } from "firebase/firestore";
 import cookie from 'react-cookies'
 
@@ -39,40 +40,28 @@ const getDataFromFirebase = async (collection, id) => {
 }
 
 const sendPostRequest = (url, body) => {
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: body,
+
+    axios.post(url, body)
+    .then(response => {
+        console.log('Success:', response.data);
+        return response.data;
     })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            return data;
-        })
-        .catch((error) => {
-            console.log('Error:', error);
-            return;
-        });
+    .catch(error => {
+        console.error('Error:', error);
+        return;
+    });
 }
 
 const sendGetRequest = (url) => {
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+    axios.get(url)
+    .then(response => {
+        console.log('Success:', response.data);
+        return response.data;
     })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            return data;
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            return;
-        });
+    .catch(error => {
+        console.error('Error:', error);
+        return;
+    });
 }
 
 const initFacebookSdk = (callback) => {

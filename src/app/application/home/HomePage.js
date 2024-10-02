@@ -115,7 +115,7 @@ export default function HomePage() {
             client_id: process.env.INSTAGRAM_CLIENT_ID,
             client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
             grant_type: "authorization_code",
-            redirect_uri: "https://purgepost-front.vercel.app/application/home/",
+            redirect_uri: "https://purgepost-front.vercel.app/application/home",
         };
         const url = "https://api.instagram.com/oauth/access_token";
         let authRes = sendPostRequest(url, body);

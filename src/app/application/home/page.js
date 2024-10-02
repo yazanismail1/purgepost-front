@@ -44,9 +44,7 @@ export default function Home() {
     if (!isLoggesIn()) {
       router.push("/login");
     }
-    // check if the url has the code parameter
-    // const urlParams = new URLSearchParams(window.location.search);
-    const urlParams = router?.query;
+
     let code = searchParams.get('code');
     console.log("Code:", code);
     if (code) {

@@ -1,7 +1,7 @@
 'use client';
 import Posts from '@/components/Posts';
 import { ConfigProvider, Menu } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { AppstoreOutlined, BankOutlined, DollarOutlined, HomeOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import HowItWorks from '@/components/HowItWorks';
 import { getCookie, sendGetRequest, sendPostRequest, setCookie } from '@/functions/utilities';
@@ -129,6 +129,7 @@ export default function Home() {
   }
 
   return (
+    <Suspense>
     <div>
       <ConfigProvider
         theme={{
@@ -155,6 +156,8 @@ export default function Home() {
       }
 
     </div>
+
+    </Suspense>
 
   );
 };

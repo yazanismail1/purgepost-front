@@ -2,8 +2,8 @@ import { db } from "@/components/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import cookie from 'react-cookies'
 
-const setCookie = (name, value, days) => {
-    cookie.save(name, value, { path: '/'});
+const setCookie = (name, value, days=0) => {
+    cookie.save(name, value, { path: '/' });
     // document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
@@ -75,4 +75,37 @@ const sendGetRequest = (url) => {
         });
 }
 
-export { setCookie, getCookie, eraseCookie, getDataFromFirebase, sendPostRequest, sendGetRequest };
+const initFacebookSdk = (callback) => {
+    // Load the Facebook SDK asynchronously
+    window.fbAsyncInit = () => {
+        window?.FB?.init({
+            appId: '1268250524120464', // Replace with your App ID
+            cookie: true,
+            xfbml: true,
+            version: 'v16.0'
+        });
+
+        // Call the provided callback once initialized
+        if (typeof callback === 'function') {
+            callback();
+        }
+    };
+};
+
+const getFacebookLoginStatus = (callback) => {
+    window?.FB?.getLoginStatus((response) => {
+        if (typeof callback === 'function') {
+            callback(response);
+        }
+    });
+};
+
+const fbLogin = (callback) => {
+    window?.FB?.login((response) => {
+        if (typeof callback === 'function') {
+            callback(response);
+        }
+    });
+};
+
+export { setCookie, getCookie, eraseCookie, getDataFromFirebase, sendPostRequest, sendGetRequest, initFacebookSdk, getFacebookLoginStatus, fbLogin };

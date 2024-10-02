@@ -22,6 +22,8 @@ export default function LoginPage() {
             
             setCookie("accessToken", accessToken, 1);
             setCookie("uid", uid, 1);
+            setCookie("instagramUserId", userData?.instagramUserId, 1);
+
             setCookie("userBalance", String(userData?.balance), 1);
             setCookie("instagramToken", userData?.instagramToken, 1);
 

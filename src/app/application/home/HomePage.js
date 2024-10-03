@@ -131,8 +131,7 @@ export default function HomePage() {
 
         axios.post('/api/instagram', constructedBody)
         .then((res) => {
-            alert(res)
-            alert(res.data)
+
             console.log(res);
             console.log(res.data)
             console.log(JSON.parse(res.data));

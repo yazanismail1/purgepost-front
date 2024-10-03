@@ -149,7 +149,62 @@ export default function HomePage() {
             console.log("authRes", authRes);
             console.log("exchangeCodeForToken", response);
     
-            return response;
+            const INSTAGRAM_CLIENT_SECRET = process.env.INSTAGRAM_CLIENT_SECRET;
+            let shortLiveTokenUrl = `https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${INSTAGRAM_CLIENT_SECRET}&access_token=${authRes?.access_token}`;
+            let shortLiveTokenUrlreqBody = {
+                url: shortLiveTokenUrl,
+                body: null,
+                type: "GET"
+            }
+            axios.get('/api/instagram', shortLiveTokenUrlreqBody).then((res) => {
+                let longTokenRes = res.data;
+                let response = {
+                    longLivedToken: longTokenRes?.access_token,
+                    expiresIn: longTokenRes?.expires_in,
+                    tokenType: longTokenRes?.token_type,
+                };
+                console.log("getLongLiveToken", response);
+
+                let userDataUrl = `https://graph.instagram.com/v12.0/me?fields=user_id,username&access_token=${longTokenRes?.access_token}`;
+                let userDataReqBody = { 
+                    url: userDataUrl, 
+                    body: null, 
+                    type: "GET" 
+                }
+                axios.post('/api/instagram', userDataReqBody).then((res) => {
+                    let userData = res.data
+                    let responseObject = {
+                        userId: userData?.user_id,
+                        username: userData?.username,
+                    };
+                    console.log("getInstagramUserName", responseObject);
+
+                    async () => {
+                        const userPurgeId = getCookie("uid");
+                        await setDoc(doc(db, 'users', userPurgeId), {
+                            instagramToken: longTokenRes?.access_token,
+                            instagramUserId: userData?.user_id,
+                            instagramUsername: userData?.username,
+                            instagramTokenExpiresIn: longTokenRes?.expires_in,
+                            tokenType: longTokenRes?.token_type
+                        });
+                    };
+
+                    setCookie("instagramToken", longTokenRes?.access_token);
+                    setCookie("instagramUserId", userData?.user_id);
+                    setCookie("instagramUsername", userData?.username);
+                    setCookie("instagramTokenExpiresIn", longTokenRes?.expires_in);
+                    setCookie("tokenType", longTokenRes?.token_type);
+
+
+                }).catch((err) => {
+                    console.log(err);
+                    return null;
+                })
+            }).catch((err) => {
+                console.error(err);
+                return null;
+            });
         })
         .catch((err) => {
             console.log(err);

@@ -179,16 +179,18 @@ export default function HomePage() {
                     };
                     console.log("getInstagramUserName", responseObject);
 
-                    async () => {
-                        const userPurgeId = getCookie("uid");
-                        await setDoc(doc(db, 'users', userPurgeId), {
-                            instagramToken: longTokenRes?.access_token,
-                            instagramUserId: userData?.user_id,
-                            instagramUsername: userData?.username,
-                            instagramTokenExpiresIn: longTokenRes?.expires_in,
-                            tokenType: longTokenRes?.token_type
-                        });
-                    };
+                    const userPurgeId = getCookie("uid");
+                    setDoc(doc(db, 'users', userPurgeId), {
+                        instagramToken: longTokenRes?.access_token,
+                        instagramUserId: userData?.user_id,
+                        instagramUsername: userData?.username,
+                        instagramTokenExpiresIn: longTokenRes?.expires_in,
+                        tokenType: longTokenRes?.token_type
+                    }).then(() => {
+                        console.log("Document successfully written!");
+                    }).catch((error) => {
+                        console.error("Error writing document: ", error);
+                    });
 
                     setCookie("instagramToken", longTokenRes?.access_token);
                     setCookie("instagramUserId", userData?.user_id);

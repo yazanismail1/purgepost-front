@@ -48,34 +48,34 @@ export default function HomePage() {
 
         let code = searchParams.get('code');
         console.log("Outside If statement code:", code);
-        if (code=";kkhh") {
+        // if (code) {
 
-            let exchangeToken = exchangeCodeForToken(code);
+        //     let exchangeToken = exchangeCodeForToken(code);
 
-            if (exchangeToken?.statusCode !== 400) {
-                let longLiveTokenData = getLongLiveToken(exchangeToken?.accessToken);
-                if (longLiveTokenData) {
-                    let instagramUser = getInstagramUserName(longLiveTokenData?.longLivedToken);
-                    async () => {
-                        const userPurgeId = getCookie("uid");
-                        await setDoc(doc(db, 'users', userPurgeId), {
-                            instagramToken: longLiveTokenData?.longLivedToken,
-                            instagramUserId: instagramUser?.userId,
-                            instagramUsername: instagramUser?.username,
-                            instagramTokenExpiresIn: longLiveTokenData?.expiresIn,
-                            tokenType: longLiveTokenData?.tokenType
-                        });
-                    };
+        //     if (exchangeToken?.statusCode !== 400) {
+        //         let longLiveTokenData = getLongLiveToken(exchangeToken?.accessToken);
+        //         if (longLiveTokenData) {
+        //             let instagramUser = getInstagramUserName(longLiveTokenData?.longLivedToken);
+        //             async () => {
+        //                 const userPurgeId = getCookie("uid");
+        //                 await setDoc(doc(db, 'users', userPurgeId), {
+        //                     instagramToken: longLiveTokenData?.longLivedToken,
+        //                     instagramUserId: instagramUser?.userId,
+        //                     instagramUsername: instagramUser?.username,
+        //                     instagramTokenExpiresIn: longLiveTokenData?.expiresIn,
+        //                     tokenType: longLiveTokenData?.tokenType
+        //                 });
+        //             };
 
-                    setCookie("instagramToken", longLiveTokenData?.longLivedToken);
-                    setCookie("instagramUserId", instagramUser?.userId);
-                    setCookie("instagramUsername", instagramUser?.username);
-                    setCookie("instagramTokenExpiresIn", longLiveTokenData?.expiresIn);
-                    setCookie("tokenType", longLiveTokenData?.tokenType);
+        //             setCookie("instagramToken", longLiveTokenData?.longLivedToken);
+        //             setCookie("instagramUserId", instagramUser?.userId);
+        //             setCookie("instagramUsername", instagramUser?.username);
+        //             setCookie("instagramTokenExpiresIn", longLiveTokenData?.expiresIn);
+        //             setCookie("tokenType", longLiveTokenData?.tokenType);
 
-                };
-            };
-        };
+        //         };
+        //     };
+        // };
     }, [])
 
     // const getInstagramUserName = (accessToken) => {

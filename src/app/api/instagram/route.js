@@ -12,7 +12,7 @@ export async function POST(req, res) {
         }
         const response = await axios.post(url, formData);
         
-        return new Response(response.data, {
+        return new Response(JSON.stringify(response.data), {
             status: 200,
         });
     } catch (error) {

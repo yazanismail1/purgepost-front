@@ -13,6 +13,14 @@ const nextConfig = {
         INSTAGRAM_CLIENT_ID: process.env.INSTAGRAM_CLIENT_ID,
         INSTAGRAM_REDIRECT_URI: process.env.INSTAGRAM_REDIRECT_URI,
     },
+    async rewrites() {
+        return [
+            {
+                source: '/:path*',
+                destination: 'https://api.instagram.com/:path*',
+            },
+        ]
+    },
 };
 
 export default nextConfig;

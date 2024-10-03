@@ -134,7 +134,7 @@ export default function HomePage() {
 
             console.log(res);
             console.log(res.data)
-            console.log(JSON.parse(res.data));
+            // console.log(JSON.parse(res.data));
             console.log(JSON.stringify(res.data));
             console.log(res?.data?.data);
             let authRes = res.data;

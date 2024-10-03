@@ -47,16 +47,8 @@ export default function HomePage() {
         }
 
         let code = searchParams.get('code');
+        console.log("Outside If statement code:", code);
         if (code) {
-            if (code.endsWith('#_')) {
-                code = code.slice(0, -2);
-            }
-        }
-
-        // remove the last two characters from the code variable
-
-        if (code) {
-            console.log("Code:", code);
 
             let exchangeToken = exchangeCodeForToken(code);
 

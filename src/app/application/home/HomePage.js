@@ -48,7 +48,7 @@ export default function HomePage() {
 
         let code = searchParams.get('code');
         console.log("Outside If statement code:", code);
-        if (code) {
+        if (code=";kkhh") {
 
             let exchangeToken = exchangeCodeForToken(code);
 
@@ -78,77 +78,80 @@ export default function HomePage() {
         };
     }, [])
 
-    const getInstagramUserName = (accessToken) => {
-        let userDataUrl = `https://graph.instagram.com/v12.0/me?fields=user_id,username&access_token=${accessToken}`;
-        axios.get('/api/instagram', { userDataUrl }).then((res) => {
-            let userData = res.data
-            let responseObject = {
-                userId: userData?.data[0]?.user_id,
-                username: userData?.data[0]?.username,
-            };
-            console.log("getInstagramUserName", responseObject);
-            return responseObject;
-        }).catch((err) => {
-            console.log(err);
-            return;
-        })
-    };
+    // const getInstagramUserName = (accessToken) => {
+    //     let userDataUrl = `https://graph.instagram.com/v12.0/me?fields=user_id,username&access_token=${accessToken}`;
+    //     axios.get('/api/instagram', { userDataUrl }).then((res) => {
+    //         let userData = res.data
+    //         let responseObject = {
+    //             userId: userData?.data[0]?.user_id,
+    //             username: userData?.data[0]?.username,
+    //         };
+    //         console.log("getInstagramUserName", responseObject);
+    //         return responseObject;
+    //     }).catch((err) => {
+    //         console.log(err);
+    //         return;
+    //     })
+    // };
 
-    const getLongLiveToken = (accessToken) => {
-        const INSTAGRAM_CLIENT_SECRET = process.env.INSTAGRAM_CLIENT_SECRET;
-        let getUrl = `https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${INSTAGRAM_CLIENT_SECRET}&access_token=${accessToken}`;
-        // let longTokenRes = sendGetRequest(getUrl)
-        axios.get('/api/instagram', { getUrl }).then((res) => {
-            let longTokenRes = res.data;
-            let response = {
-                longLivedToken: longTokenRes?.access_token,
-                expiresIn: longTokenRes?.expires_in,
-                tokenType: longTokenRes?.token_type,
-            };
-            console.log("getLongLiveToken", response);
+    // const getLongLiveToken = (accessToken) => {
+    //     const INSTAGRAM_CLIENT_SECRET = process.env.INSTAGRAM_CLIENT_SECRET;
+    //     let getUrl = `https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${INSTAGRAM_CLIENT_SECRET}&access_token=${accessToken}`;
+    //     // let longTokenRes = sendGetRequest(getUrl)
+    //     axios.get('/api/instagram', { getUrl }).then((res) => {
+    //         let longTokenRes = res.data;
+    //         let response = {
+    //             longLivedToken: longTokenRes?.access_token,
+    //             expiresIn: longTokenRes?.expires_in,
+    //             tokenType: longTokenRes?.token_type,
+    //         };
+    //         console.log("getLongLiveToken", response);
     
-            return response;
-        }).catch((err) => {
-            console.error(err);
-            return;
-        });
-    };
+    //         return response;
+    //     }).catch((err) => {
+    //         console.error(err);
+    //         return;
+    //     });
+    // };
 
-    const exchangeCodeForToken = (code) => {
-        const body = {
-            code: code,
-            client_id: process.env.INSTAGRAM_CLIENT_ID,
-            client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
-            grant_type: "authorization_code",
-            redirect_uri: "https://purgepost-front.vercel.app/application/home/",
-        };
+    // const exchangeCodeForToken = (code) => {
+    //     const body = {
+    //         code: code,
+    //         client_id: process.env.INSTAGRAM_CLIENT_ID,
+    //         client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
+    //         grant_type: "authorization_code",
+    //         redirect_uri: "https://purgepost-front.vercel.app/application/home/",
+    //     };
 
-        const url = "https://api.instagram.com/oauth/access_token";
-        const constructedBody = {
-            url: url,
-            body: body,
-        }
+    //     const url = "https://api.instagram.com/oauth/access_token";
+    //     const constructedBody = {
+    //         url: url,
+    //         body: body,
+    //     }
 
-        axios.post('/api/instagram', constructedBody)
-        .then((res) => {
-            let authRes = res.data;
-            let response = {
-                statusCode: authRes?.code,
-                accessToken: authRes?.data[0]?.access_token,
-                userId: authRes?.data[0]?.user_id,
-            };
-            console.log("authRes", authRes);
-            console.log("body", body);
-            console.log("exchangeCodeForToken", response);
+    //     axios.post('/api/instagram', constructedBody)
+    //     .then((res) => {
+    //         alert(res)
+    //         alert(res.data)
+
+    //         let authRes = res.data;
+    //         let response = {
+    //             statusCode: authRes?.code,
+    //             accessToken: authRes?.data[0]?.access_token,
+    //             userId: authRes?.data[0]?.user_id,
+    //         };
+    //         console.log("authRes", authRes);
+    //         console.log("body", body);
+    //         console.log("exchangeCodeForToken", response);
     
-            return response;
-        })
-        .catch((err) => {
-            console.log(err);
-            return;
-        }
-        );
-    }
+    //         return response;
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //         return;
+    //     }
+    //     );
+    // }
 
     const isLoggesIn = () => {
         let loggedIn = getCookie("accessToken") ? true : false;

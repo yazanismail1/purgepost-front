@@ -51,8 +51,8 @@ export default function HomePage() {
         if (code) {
 
             let exchangeToken = exchangeCodeForToken(code);
-
-            if (exchangeToken != null) {
+            console.log("exchangeToken func", exchangeToken)
+            if (exchangeToken) {
                 let longLiveTokenData = getLongLiveToken(exchangeToken?.accessToken);
                 if (longLiveTokenData) {
                     let instagramUser = getInstagramUserName(longLiveTokenData?.longLivedToken);

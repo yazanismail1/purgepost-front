@@ -156,7 +156,7 @@ export default function HomePage() {
                 body: null,
                 type: "GET"
             }
-            axios.get('/api/instagram', shortLiveTokenUrlreqBody).then((res) => {
+            axios.post('/api/instagram', shortLiveTokenUrlreqBody).then((res) => {
                 let longTokenRes = res.data;
                 let response = {
                     longLivedToken: longTokenRes?.access_token,

@@ -133,7 +133,11 @@ export default function HomePage() {
         .then((res) => {
             alert(res)
             alert(res.data)
-
+            console.log(res);
+            console.log(res.data)
+            console.log(JSON.parse(res.data));
+            console.log(JSON.stringify(res.data));
+            console.log(res?.data?.data);
             let authRes = res.data;
             let response = {
                 statusCode: authRes?.code,

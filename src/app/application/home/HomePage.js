@@ -8,7 +8,7 @@ import { getCookie, sendGetRequest, sendPostRequest, setCookie } from '@/functio
 import { useRouter, useSearchParams } from 'next/navigation';
 import Pricing from '@/components/Pricing';
 import axios from 'axios';
-import { setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 
 export default function HomePage() {

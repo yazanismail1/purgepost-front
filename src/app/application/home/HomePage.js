@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Pricing from '@/components/Pricing';
 import axios from 'axios';
 import { doc, setDoc } from 'firebase/firestore';
+import { db } from '@/components/FirebaseConfig';
 
 
 export default function HomePage() {

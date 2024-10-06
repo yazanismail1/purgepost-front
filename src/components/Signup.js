@@ -111,7 +111,7 @@ export default function Signup() {
                     </div>
 
                     <div className="!mt-12">
-                        {loading ? <button type="submit" className="w-full py-3 px-4 tracking-wider text-sm rounded-md text-white bg-primary hover:bg-hover focus:outline-none">
+                        {!loading ? <button type="submit" className="w-full py-3 px-4 tracking-wider text-sm rounded-md text-white bg-primary hover:bg-hover focus:outline-none">
                             Create an account
                         </button>:
                             <button className="flex justify-center gap-1 bg-primary hover:bg-hover disabled:cursor-not-allowed disabled:bg-light text-white rounded-lg items-center px-4 py-2">

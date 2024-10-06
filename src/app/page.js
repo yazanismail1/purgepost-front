@@ -3,7 +3,9 @@ import Image from "next/image";
 
 export default function Home() {
   return (
+    <>
     <div className="min-h-screen bg-gray-100">
+
       {/* Header */}
       {/* <Header /> */}
 
@@ -12,7 +14,7 @@ export default function Home() {
         {/* Hero Content */}
         <div className="md:max-w-[50%]">
           <h1 className="md:text-4xl text-3xl font-bold mb-2 md:text-left text-center">
-            Clean up your <span className="underline md:text-5xl text-4xl">Instagram comments</span> with one click!
+            Clean your <span className="underline md:text-5xl text-4xl">Instagram comments</span> with one click!
           </h1>
           <p className="text-lg text-gray-500 mb-6 md:text-justify text-center">
             Automatically detect and remove negative comments from your posts with the help of AI. Let PurgePost keep your feed positive and engaging!
@@ -30,5 +32,6 @@ export default function Home() {
 
       </section>
     </div>
+    </>
   );
 }

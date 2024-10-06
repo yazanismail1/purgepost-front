@@ -25,7 +25,19 @@ export async function POST(req, res) {
         } else if (type === "GET") {
             try {
                 const response = await axios.get(url);
-                
+                return new Response(JSON.stringify(response.data), {
+                    status: 200,
+                });
+            } catch (error) {
+                console.error('Error:', error?.response?.data);
+                console.error('Error:', error?.message);
+                return new Response(JSON.stringify(error?.response?.data || error.message), {
+                    status: error?.response?.status || 500,
+                });
+            }
+        } else if (type === "DELETE") {
+            try {
+                const response = await axios.delete(url);
                 return new Response(JSON.stringify(response.data), {
                     status: 200,
                 });
@@ -35,7 +47,7 @@ export async function POST(req, res) {
                     status: error.response?.status || 500,
                 });
             }
-        };
+        }
     } catch (error) {
         console.error('Error:', error.response?.data || error.message);
         return new Response(JSON.stringify({ error: 'Failed to send request' }), {
@@ -44,19 +56,3 @@ export async function POST(req, res) {
     }
 }
 
-export async function GET(req) {
-    try {
-        const { url } = await req.json();
-
-        const response = await axios.get(url);
-
-        return new Response(JSON.stringify(response.data), {
-            status: 200,
-        });
-    } catch (error) {
-        console.error('Error:', error.response?.data || error.message);
-        return new Response(JSON.stringify({ error: 'Failed to send request' }), {
-            status: error.response?.status || 500,
-        });
-    }
-}

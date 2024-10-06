@@ -12,6 +12,8 @@ const nextConfig = {
         INSTAGRAM_CLIENT_SECRET: process.env.INSTAGRAM_CLIENT_SECRET,
         INSTAGRAM_CLIENT_ID: process.env.INSTAGRAM_CLIENT_ID,
         INSTAGRAM_REDIRECT_URI: process.env.INSTAGRAM_REDIRECT_URI,
+
+        OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     },
     async rewrites() {
         return [

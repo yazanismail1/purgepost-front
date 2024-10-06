@@ -1,15 +1,17 @@
 'use client';
 import { doc, setDoc } from 'firebase/firestore';
 import { db, auth } from '@/components/FirebaseConfig';
-import React from 'react'
+import React, {useState} from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {useRouter} from 'next/navigation';
 
 export default function Signup() {
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleSignUp = async (e) => {
         e.preventDefault();
+        setLoading(true);
         let email = e.target.email.value;
         let password = e.target.password.value;
         let confirmPassword = e.target.confirmPassword.value;
@@ -27,11 +29,13 @@ export default function Signup() {
                 instagramToken: '',
             });
 
-            alert('Account created successfully');
+            // alert('Account created successfully');
+            setLoading(false);
             router.push('/login');
             // window.location.href = '/login';
         } catch (err) {
             alert(err.message);
+            setLoading(false);
             console.log(err.message);
         }
     };
@@ -107,9 +111,17 @@ export default function Signup() {
                     </div>
 
                     <div className="!mt-12">
-                        <button type="submit" className="w-full py-3 px-4 tracking-wider text-sm rounded-md text-white bg-primary hover:bg-hover focus:outline-none">
+                        {loading ? <button type="submit" className="w-full py-3 px-4 tracking-wider text-sm rounded-md text-white bg-primary hover:bg-hover focus:outline-none">
                             Create an account
-                        </button>
+                        </button>:
+                            <button className="flex justify-center gap-1 bg-primary hover:bg-hover disabled:cursor-not-allowed disabled:bg-light text-white rounded-lg items-center px-4 py-2">
+                                <div className="animate-spin" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                    </svg>
+                                </div>
+                            </button>
+                        }
                     </div>
                     <p className="text-gray-800 text-sm mt-6 text-center">Already have an account? <a href="/login" className="text-primary font-semibold hover:underline ml-1">Login here</a></p>
                 </form>

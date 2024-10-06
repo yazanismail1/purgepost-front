@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="min-h-screen bg-gray-100">
         <Header />
-        <div className="md:px-[10rem] px-[2.5rem] py-10">
+        <div className="md:px-[10rem] px-[0.5rem] py-10">
           {children}
         </div>
       </body>

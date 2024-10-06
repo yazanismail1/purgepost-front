@@ -14,14 +14,9 @@ import { db } from '@/components/FirebaseConfig';
 
 export default function HomePage() {
     const [current, setCurrent] = useState('home');
+    const [userData, setUserData] = useState({isConnected:false});
     const router = useRouter();
     const searchParams = useSearchParams();
-
-    const onClick = (e) => {
-        console.log('click ', e);
-        setCurrent(e.key);
-    };
-
     const items = [
         {
             label: 'Home',
@@ -32,16 +27,8 @@ export default function HomePage() {
             label: 'Top Up & Pricing',
             key: 'pricing',
             icon: <DollarOutlined />,
-        },
-        {
-            label: `Account Balance: $${getCookie("balance") || 0}`,
-            key: '',
-            icon: <BankOutlined />,
-            disabled: true,
-        },
+        }
     ];
-
-    const balance = 100;
 
     useEffect(() => {
         if (!isLoggesIn()) {
@@ -49,83 +36,28 @@ export default function HomePage() {
         }
 
         let code = searchParams.get('code');
-        console.log("Outside If statement code:", code);
         if (code) {
-
-            let exchangeToken = exchangeCodeForToken(code);
-            console.log("exchangeToken func", exchangeToken)
-            if (exchangeToken) {
-                let longLiveTokenData = getLongLiveToken(exchangeToken?.accessToken);
-                if (longLiveTokenData) {
-                    let instagramUser = getInstagramUserName(longLiveTokenData?.longLivedToken);
-                    async () => {
-                        const userPurgeId = getCookie("uid");
-                        await setDoc(doc(db, 'users', userPurgeId), {
-                            instagramToken: longLiveTokenData?.longLivedToken,
-                            instagramUserId: instagramUser?.userId,
-                            instagramUsername: instagramUser?.username,
-                            instagramTokenExpiresIn: longLiveTokenData?.expiresIn,
-                            tokenType: longLiveTokenData?.tokenType
-                        });
-                    };
-
-                    setCookie("instagramToken", longLiveTokenData?.longLivedToken);
-                    setCookie("instagramUserId", instagramUser?.userId);
-                    setCookie("instagramUsername", instagramUser?.username);
-                    setCookie("instagramTokenExpiresIn", longLiveTokenData?.expiresIn);
-                    setCookie("tokenType", longLiveTokenData?.tokenType);
-
-                };
-            };
+            connectInstagram(code);
         };
+
+        if (getCookie("isConnectedToInstagram") === "true") {
+            setUserData({
+                isConnected: true,
+                instagramToken: getCookie("instagramToken"),
+                instagramUserId: getCookie("instagramUserId"),
+                instagramUsername: getCookie("instagramUsername"),
+                instagramTokenExpiresIn: getCookie("instagramTokenExpiresIn"),
+                tokenType: getCookie("tokenType"),
+                balance: getCookie("userBalance"),
+            })
+        }
+        
     }, [])
 
-    const getInstagramUserName = (accessToken) => {
-        let userDataUrl = `https://graph.instagram.com/v12.0/me?fields=user_id,username&access_token=${accessToken}`;
-        let reqBody = { 
-            url: userDataUrl, 
-            body: null, 
-            type: "GET" 
-        }
-        axios.post('/api/instagram', reqBody).then((res) => {
-            let userData = res.data
-            let responseObject = {
-                userId: userData?.data?.user_id,
-                username: userData?.data?.username,
-            };
-            console.log("getInstagramUserName", responseObject);
-            return responseObject;
-        }).catch((err) => {
-            console.log(err);
-            return null;
-        })
-    };
 
-    const getLongLiveToken = (accessToken) => {
-        const INSTAGRAM_CLIENT_SECRET = process.env.INSTAGRAM_CLIENT_SECRET;
-        let getUrl = `https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${INSTAGRAM_CLIENT_SECRET}&access_token=${accessToken}`;
-        let reqBody = { 
-            url: getUrl, 
-            body: null, 
-            type: "GET" 
-        }
-        axios.get('/api/instagram', reqBody).then((res) => {
-            let longTokenRes = res.data;
-            let response = {
-                longLivedToken: longTokenRes?.access_token,
-                expiresIn: longTokenRes?.expires_in,
-                tokenType: longTokenRes?.token_type,
-            };
-            console.log("getLongLiveToken", response);
-    
-            return response;
-        }).catch((err) => {
-            console.error(err);
-            return null;
-        });
-    };
 
-    const exchangeCodeForToken = (code) => {
+
+    const connectInstagram = (code) => {
         const body = {
             code: code,
             client_id: process.env.INSTAGRAM_CLIENT_ID,
@@ -141,8 +73,7 @@ export default function HomePage() {
             type: "POST"
         }
 
-        axios.post('/api/instagram', constructedBody)
-        .then((res) => {
+        axios.post('/api/instagram', constructedBody).then((res) => {
             let authRes = res.data;
             let response = {
                 accessToken: authRes?.access_token,
@@ -187,20 +118,29 @@ export default function HomePage() {
                         instagramUserId: userData?.user_id,
                         instagramUsername: userData?.username,
                         instagramTokenExpiresIn: longTokenRes?.expires_in,
-                        tokenType: longTokenRes?.token_type
+                        tokenType: longTokenRes?.token_type,
+                        isConnectedToInstagram: true,
+                        userBalance: getCookie("userBalance"),
                     }).then(() => {
+                        setCookie("instagramToken", longTokenRes?.access_token);
+                        setCookie("instagramUserId", userData?.user_id);
+                        setCookie("instagramUsername", userData?.username);
+                        setCookie("instagramTokenExpiresIn", longTokenRes?.expires_in);
+                        setCookie("tokenType", longTokenRes?.token_type);
+
+                        setCookie("isConnectedToInstagram", true);
+
+                        if (window !== undefined && window?.location?.search) {
+                            const currentParams = new URLSearchParams(window?.location?.search);
+                            currentParams.delete('code');
+                            const newUrl = `${window?.location?.pathname}?${currentParams?.toString()}`;
+                            router.replace(newUrl);
+                        }
+
                         console.log("Document successfully written!");
                     }).catch((error) => {
                         console.error("Error writing document: ", error);
                     });
-
-                    setCookie("instagramToken", longTokenRes?.access_token);
-                    setCookie("instagramUserId", userData?.user_id);
-                    setCookie("instagramUsername", userData?.username);
-                    setCookie("instagramTokenExpiresIn", longTokenRes?.expires_in);
-                    setCookie("tokenType", longTokenRes?.token_type);
-
-
                 }).catch((err) => {
                     console.log(err);
                     return null;
@@ -222,6 +162,12 @@ export default function HomePage() {
         return loggedIn;
     }
 
+    const onClick = (e) => {
+        console.log('click ', e);
+        setCurrent(e.key);
+    };
+
+
     return (
         <div>
             <ConfigProvider
@@ -237,16 +183,11 @@ export default function HomePage() {
                 <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
             </ConfigProvider>
             {current === 'home' && <>
+                {userData?.isConnected ? <Posts userData={userData} /> : <HowItWorks />}
+                
 
-                <HowItWorks />
-                {/* {getCookie("instagramToken") ?
-          <Posts /> :
-          <HowItWorks />
-        } */}
             </>}
-            {current === 'pricing' && <Pricing />
-
-            }
+            {current === 'pricing' && <Pricing />}
 
         </div>
     );

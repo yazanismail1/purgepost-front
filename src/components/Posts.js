@@ -412,7 +412,7 @@ export default function Posts({ userData }) {
 
 
 
-                    {<EmptyHappy text="There’s no moderated comments here" />}
+                    {<Empty text="There’s no moderated comments here" />}
                 </>}
 
 
